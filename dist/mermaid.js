@@ -30304,7 +30304,7 @@ function addHtmlLabel(root, node) {
   var client = div.node().getBoundingClientRect();
   fo
     .attr("width", client.width)
-    .attr("height", client.height);
+    .attr("height", client.height); 
 
   return fo;
 }
@@ -52214,7 +52214,7 @@ var config = {
      ***Notes:
      *Default Vaue: monotoneX**
      */
-    curve: 'natural',
+    curve: 'basis',
     // Only used in new experimental rendering
     // represents the padding between the labels and the shape
     padding: 15,
@@ -52345,6 +52345,15 @@ var config = {
      ***Notes:**center **default**
      */
     messageAlign: 'center',
+
+    /**
+    *| Parameter | Description |Type | Required | Values|
+    *| --- | --- | --- | --- | --- |
+    *| messageVerticalAlign | Multiline message alignment | Integer | Required | top, center, bottom |
+    *
+    ***Notes:**center **default**
+    */
+    messageVerticalAlign: 'center',
 
     /**
      *| Parameter | Description |Type | Required | Values|
@@ -67727,7 +67736,7 @@ var drawMessage = function drawMessage(g, msgModel) {
   textObj.fontSize = conf.messageFontSize;
   textObj.fontWeight = conf.messageFontWeight;
   textObj.anchor = conf.messageAlign;
-  textObj.valign = conf.messageAlign;
+  textObj.valign = conf.messageVerticalAlign;
   textObj.textMargin = conf.wrapPadding;
   textObj.tspan = false;
   Object(_svgDraw__WEBPACK_IMPORTED_MODULE_1__["drawText"])(g, textObj);
@@ -72725,7 +72734,7 @@ var init = function init() {
     });
   }
 
-  var nextId = _utils__WEBPACK_IMPORTED_MODULE_3__["default"].initIdGeneratior(conf.deterministicIds, conf.deterministicIDSeed).next;
+  var idGeneratior = _utils__WEBPACK_IMPORTED_MODULE_3__["default"].initIdGeneratior(conf.deterministicIds, conf.deterministicIDSeed);
   var txt;
 
   var _loop = function _loop(i) {
@@ -72738,7 +72747,7 @@ var init = function init() {
       return "continue";
     }
 
-    var id = "mermaid-".concat(nextId()); // Fetch the graph definition including tags
+    var id = "mermaid-".concat(idGeneratior.next()); // Fetch the graph definition including tags
 
     txt = element.innerHTML; // transforms the html to pure text
 
@@ -73216,10 +73225,20 @@ var render = function render(id, _txt, cb, container) {
     var classes = _diagrams_flowchart_flowRenderer__WEBPACK_IMPORTED_MODULE_12__["default"].getClasses(txt);
 
     for (var className in classes) {
-      userStyles += "\n.".concat(className, " > * { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+      if (cnf.htmlLabels || cnf.flowchart.htmlLabels) {
+        userStyles += "\n.".concat(className, " > * { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+        userStyles += "\n.".concat(className, " span { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+      } else {
+        // console.log('classes[className].styles', classes[className].styles, cnf.htmlLabels);
+        userStyles += "\n.".concat(className, " path { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+        userStyles += "\n.".concat(className, " rect { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+        userStyles += "\n.".concat(className, " polygon { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+        userStyles += "\n.".concat(className, " ellipse { ").concat(classes[className].styles.join(' !important; '), " !important; }");
+        userStyles += "\n.".concat(className, " circle { ").concat(classes[className].styles.join(' !important; '), " !important; }");
 
-      if (classes[className].textStyles) {
-        userStyles += "\n.".concat(className, " tspan { ").concat(classes[className].textStyles.join(' !important; '), " !important; }");
+        if (classes[className].textStyles) {
+          userStyles += "\n.".concat(className, " tspan { ").concat(classes[className].textStyles.join(' !important; '), " !important; }");
+        }
       }
     }
   } // log.warn(cnf.themeVariables);
@@ -74051,8 +74070,9 @@ function () {
       this.labelBoxBorderColor = this.actorBorder;
       this.labelTextColor = this.mainContrastColor;
       this.loopTextColor = this.mainContrastColor;
-      this.noteBorderColor = this.border2;
-      this.noteTextColor = this.mainBkg;
+      this.noteBorderColor = this.secondaryBorderColor;
+      this.noteBkgColor = this.secondBkg;
+      this.noteTextColor = this.secondaryTextColor;
       this.activationBorderColor = this.border1;
       this.activationBkgColor = this.secondBkg;
       /* Gantt chart variables */

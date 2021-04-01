@@ -304,6 +304,14 @@ Space between messages.
 
 **Notes:**center **default**
 
+### messageVerticalAlign
+
+| Parameter            | Description                 | Type    | Required | Values              |
+| -------------------- | --------------------------- | ------- | -------- | ------------------- |
+| messageVerticalAlign | Multiline message alignment | Integer | Required | top, center, bottom |
+
+**Notes:**center **default**
+
 ### mirrorActors
 
 | Parameter    | Description                  | Type    | Required | Values      |
