@@ -289,7 +289,7 @@ const drawMessage = function(g, msgModel) {
   textObj.fontSize = conf.messageFontSize;
   textObj.fontWeight = conf.messageFontWeight;
   textObj.anchor = conf.messageAlign;
-  textObj.valign = conf.messageAlign;
+  textObj.valign = conf.messageVerticalAlign;
   textObj.textMargin = conf.wrapPadding;
   textObj.tspan = false;
 

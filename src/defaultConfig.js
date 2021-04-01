@@ -318,6 +318,15 @@ const config = {
      */
     messageAlign: 'center',
 
+        /**
+     *| Parameter | Description |Type | Required | Values|
+     *| --- | --- | --- | --- | --- |
+     *| messageVerticalAlign | Multiline message alignment | Integer | Required | top, center, bottom |
+     *
+     ***Notes:**center **default**
+     */
+    messageVerticalAlign: 'center',
+
     /**
      *| Parameter | Description |Type | Required | Values|
      *| --- | --- | --- | --- | --- |
