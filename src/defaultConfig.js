@@ -318,7 +318,7 @@ const config = {
      */
     messageAlign: 'center',
 
-        /**
+    /**
      *| Parameter | Description |Type | Required | Values|
      *| --- | --- | --- | --- | --- |
      *| messageVerticalAlign | Multiline message alignment | Integer | Required | top, center, bottom |
