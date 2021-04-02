@@ -141,7 +141,7 @@ export const drawText = function(elem, textData) {
     }
 
     // Ensure whitespace is preserved
-    textElem.node().setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve");
+    textElem.node().setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
     textElems.push(textElem);
   }
 
