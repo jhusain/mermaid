@@ -140,6 +140,8 @@ export const drawText = function(elem, textData) {
       prevTextHeight = textHeight;
     }
 
+    // Ensure whitespace is preserved
+    textElem.node().setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space", "preserve");
     textElems.push(textElem);
   }
 
