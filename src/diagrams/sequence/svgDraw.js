@@ -94,6 +94,8 @@ export const drawText = function(elem, textData) {
     const textElem = elem.append('text');
     textElem.attr('x', textData.x);
     textElem.attr('y', yfunc());
+    // Ensure whitespace is preserved
+    textElem.node().setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
     if (typeof textData.anchor !== 'undefined') {
       textElem
         .attr('text-anchor', textData.anchor)
@@ -140,8 +142,6 @@ export const drawText = function(elem, textData) {
       prevTextHeight = textHeight;
     }
 
-    // Ensure whitespace is preserved
-    textElem.node().setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
     textElems.push(textElem);
   }
 
