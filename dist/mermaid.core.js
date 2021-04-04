@@ -20113,7 +20113,7 @@ var drawText = function drawText(elem, textData) {
   var formattedText = backTickRegex.exec(textData.text);
 
   if (formattedText) {
-    textData.text = formattedText.groups[1].toString();
+    textData.text = formattedText[1].toString();
   }
 
   var lines = textData.text.split(_common_common__WEBPACK_IMPORTED_MODULE_0__["default"].lineBreakRegex);

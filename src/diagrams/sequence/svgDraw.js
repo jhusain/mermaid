@@ -25,7 +25,7 @@ export const drawText = function(elem, textData) {
 
   const formattedText = backTickRegex.exec(textData.text);
   if (formattedText) {
-    textData.text = formattedText.groups[1].toString();
+    textData.text = formattedText[1].toString();
   }
   const lines = textData.text.split(common.lineBreakRegex);
 
