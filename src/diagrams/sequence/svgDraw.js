@@ -87,7 +87,7 @@ export const drawText = function(elem, textData) {
         break;
     }
   }
-  const minLength = formattedText ? lines.map(line => line.length).reduce(Math.max.bind(Math)) : 0;
+  const minLength = formattedText ? Math.max(...lines.map(line => line.length)) : 0;
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i].padEnd(minLength);
     if (
