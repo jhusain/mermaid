@@ -18,14 +18,13 @@ export const drawRect = function(elem, rectData) {
   return rectElem;
 };
 
-const backTickRegex = /^`(.*)`*$/gi;
 export const drawText = function(elem, textData) {
   let prevTextHeight = 0,
     textHeight = 0;
 
-  const formattedText = backTickRegex.exec(textData.text);
+  const formattedText = /^(?<parser>[a-z]*)`(?<text>[^`]*)`?$/gi.exec(textData.text);
   if (formattedText) {
-    textData.text = formattedText[1].toString();
+    textData.text = formattedText.groups.text;
   }
   const lines = textData.text.split(common.lineBreakRegex);
 
