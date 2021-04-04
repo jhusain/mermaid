@@ -565,8 +565,8 @@ const _drawTextCandidateFunc = (function() {
 
   function _setTextAttrs(toText, fromTextAttrsDict) {
     for (const key in fromTextAttrsDict) {
+      //  eslint-disable-next-line no-prototype-builtins
       if (fromTextAttrsDict.hasOwnProperty(key)) {
-        // eslint-disable-line
         toText.attr(key, fromTextAttrsDict[key]);
       }
     }
