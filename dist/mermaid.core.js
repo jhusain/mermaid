@@ -20106,9 +20106,16 @@ var drawRect = function drawRect(elem, rectData) {
 
   return rectElem;
 };
+var backTickRegex = /^`(.*)`*$/gi;
 var drawText = function drawText(elem, textData) {
   var prevTextHeight = 0,
       textHeight = 0;
+  var formattedText = backTickRegex.exec(textData.text);
+
+  if (formattedText) {
+    textData.text = formattedText.groups[1].toString();
+  }
+
   var lines = textData.text.split(_common_common__WEBPACK_IMPORTED_MODULE_0__["default"].lineBreakRegex);
   var textElems = [];
   var dy = 0;
@@ -20173,8 +20180,12 @@ var drawText = function drawText(elem, textData) {
     }
   }
 
+  var minLength = formattedText ? lines.map(function (line) {
+    return line.length;
+  }).reduce(Math.max.bind(Math)) : 0;
+
   for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
+    var line = lines[i].padEnd(minLength);
 
     if (typeof textData.textMargin !== 'undefined' && textData.textMargin === 0 && typeof textData.fontSize !== 'undefined') {
       dy = i * textData.fontSize;
@@ -20184,7 +20195,7 @@ var drawText = function drawText(elem, textData) {
     textElem.attr('x', textData.x);
     textElem.attr('y', yfunc()); // Ensure whitespace is preserved
 
-    if (typeof textElem.node === 'function') {
+    if (formattedText && typeof textElem.node === 'function') {
       textElem.node().setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
     }
 
@@ -20192,7 +20203,9 @@ var drawText = function drawText(elem, textData) {
       textElem.attr('text-anchor', textData.anchor).attr('dominant-baseline', textData.dominantBaseline).attr('alignment-baseline', textData.alignmentBaseline);
     }
 
-    if (typeof textData.fontFamily !== 'undefined') {
+    if (formattedText) {
+      textElem.style('font-family', 'monospace');
+    } else if (typeof textData.fontFamily !== 'undefined') {
       textElem.style('font-family', textData.fontFamily);
     }
 
@@ -20513,8 +20526,8 @@ var _drawTextCandidateFunc = function () {
 
   function _setTextAttrs(toText, fromTextAttrsDict) {
     for (var key in fromTextAttrsDict) {
+      //  eslint-disable-next-line no-prototype-builtins
       if (fromTextAttrsDict.hasOwnProperty(key)) {
-        // eslint-disable-line
         toText.attr(key, fromTextAttrsDict[key]);
       }
     }
