@@ -23,7 +23,7 @@ export const drawText = function(elem, textData) {
   let prevTextHeight = 0,
     textHeight = 0;
 
-  const formattedText = backTickRegex.exec(text);
+  const formattedText = backTickRegex.exec(textData.text);
   if (formattedText) {
     textData.text = formattedText.groups[1].toString();
   }
