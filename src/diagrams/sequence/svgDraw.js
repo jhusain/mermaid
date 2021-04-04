@@ -18,9 +18,15 @@ export const drawRect = function(elem, rectData) {
   return rectElem;
 };
 
+const backTickRegex = /^`(.*)`*$/gi;
 export const drawText = function(elem, textData) {
   let prevTextHeight = 0,
     textHeight = 0;
+
+  const formattedText = backTickRegex.exec(text);
+  if (formattedText) {
+    textData.text = formattedText.groups[1].toString();
+  }
   const lines = textData.text.split(common.lineBreakRegex);
 
   let textElems = [];
@@ -81,8 +87,9 @@ export const drawText = function(elem, textData) {
         break;
     }
   }
+  const minLength = formattedText ? lines.map(line => line.length).reduce(Math.max.bind(Math)) : 0;
   for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
+    let line = lines[i].padEnd(minLength);
     if (
       typeof textData.textMargin !== 'undefined' &&
       textData.textMargin === 0 &&
@@ -95,7 +102,7 @@ export const drawText = function(elem, textData) {
     textElem.attr('x', textData.x);
     textElem.attr('y', yfunc());
     // Ensure whitespace is preserved
-    if (typeof textElem.node === 'function') {
+    if (formattedText && typeof textElem.node === 'function') {
       textElem
         .node()
         .setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
@@ -106,7 +113,9 @@ export const drawText = function(elem, textData) {
         .attr('dominant-baseline', textData.dominantBaseline)
         .attr('alignment-baseline', textData.alignmentBaseline);
     }
-    if (typeof textData.fontFamily !== 'undefined') {
+    if (formattedText) {
+      textElem.style('font-family', 'monospace');
+    } else if (typeof textData.fontFamily !== 'undefined') {
       textElem.style('font-family', textData.fontFamily);
     }
     if (typeof textData.fontSize !== 'undefined') {
@@ -556,7 +565,8 @@ const _drawTextCandidateFunc = (function() {
 
   function _setTextAttrs(toText, fromTextAttrsDict) {
     for (const key in fromTextAttrsDict) {
-      if (fromTextAttrsDict.hasOwnProperty(key)) { // eslint-disable-line
+      if (fromTextAttrsDict.hasOwnProperty(key)) {
+        // eslint-disable-line
         toText.attr(key, fromTextAttrsDict[key]);
       }
     }
